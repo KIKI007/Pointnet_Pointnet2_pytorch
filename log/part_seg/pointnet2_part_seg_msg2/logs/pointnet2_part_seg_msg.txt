@@ -1,0 +1,8 @@
+2025-11-04 13:50:32,785 - Model - INFO - PARAMETER ...
+2025-11-04 13:50:32,785 - Model - INFO - Namespace(model='pointnet2_part_seg_msg', batch_size=16, epoch=251, learning_rate=0.001, gpu='0', optimizer='Adam', log_dir='pointnet2_part_seg_msg2', decay_rate=0.0001, npoint=2048, normal=True, step_size=20, lr_decay=0.5)
+2025-11-04 13:50:32,923 - Model - INFO - The number of training data is: 13998
+2025-11-04 13:50:32,924 - Model - INFO - The number of test data is: 2874
+2025-11-04 13:50:33,150 - Model - INFO - No existing model, starting training from scratch...
+2025-11-04 13:50:34,096 - Model - INFO - Epoch 1 (1/251):
+2025-11-04 13:50:34,096 - Model - INFO - Learning rate:0.001000
+2025-11-04 13:54:24,613 - Model - INFO - Train accuracy is: 0.86070

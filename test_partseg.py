@@ -38,7 +38,7 @@ def to_categorical(y, num_classes):
 def parse_args():
     '''PARAMETERS'''
     parser = argparse.ArgumentParser('PointNet')
-    parser.add_argument('--batch_size', type=int, default=24, help='batch size in testing')
+    parser.add_argument('--batch_size', type=int, default=48, help='batch size in testing')
     parser.add_argument('--gpu', type=str, default='0', help='specify gpu device')
     parser.add_argument('--num_point', type=int, default=2048, help='point Number')
     parser.add_argument('--log_dir', type=str, required=True, help='experiment root')
@@ -80,7 +80,7 @@ def main(args):
     model_name = os.listdir(experiment_dir + '/logs')[0].split('.')[0]
     MODEL = importlib.import_module(model_name)
     classifier = MODEL.get_model(num_part, normal_channel=args.normal).cuda()
-    checkpoint = torch.load(str(experiment_dir) + '/checkpoints/best_model.pth')
+    checkpoint = torch.load(str(experiment_dir) + '/checkpoints/best_model.pth', weights_only=False)
     classifier.load_state_dict(checkpoint['model_state_dict'])
 
     with torch.no_grad():
@@ -99,7 +99,7 @@ def main(args):
         classifier = classifier.eval()
         for batch_id, (points, label, target) in tqdm(enumerate(testDataLoader), total=len(testDataLoader),
                                                       smoothing=0.9):
-            batchsize, num_point, _ = points.size()
+            #batchsize, num_point, _ = points.size()
             cur_batch_size, NUM_POINT, _ = points.size()
             points, label, target = points.float().cuda(), label.long().cuda(), target.long().cuda()
             points = points.transpose(2, 1)
@@ -150,7 +150,7 @@ def main(args):
         mean_shape_ious = np.mean(list(shape_ious.values()))
         test_metrics['accuracy'] = total_correct / float(total_seen)
         test_metrics['class_avg_accuracy'] = np.mean(
-            np.array(total_correct_class) / np.array(total_seen_class, dtype=np.float))
+            np.array(total_correct_class) / np.array(total_seen_class, dtype=np.float32))
         for cat in sorted(shape_ious.keys()):
             log_string('eval mIoU of %s %f' % (cat + ' ' * (14 - len(cat)), shape_ious[cat]))
         test_metrics['class_avg_iou'] = mean_shape_ious
